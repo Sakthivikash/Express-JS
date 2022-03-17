@@ -2,6 +2,7 @@
 import express from "express";
 import { MongoClient } from "mongodb";
 import dotenv from 'dotenv';
+import cors from "cors";
 dotenv.config();
 
 const app = express();
@@ -81,6 +82,8 @@ const movies = [
 
 //midde ware-> Intercept -> converting body to json
 app.use(express.json());
+
+app.use(cors());
 
 // const MONGO_URL = "mongodb://localhost";
 const MONGO_URL = process.env.MONGO_URL;
