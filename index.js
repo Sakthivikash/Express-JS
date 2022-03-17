@@ -3,6 +3,8 @@ import express from "express";
 import { MongoClient } from "mongodb";
 import dotenv from 'dotenv';
 import cors from "cors";
+import { moviesRouter } from "./routes/movies.js";
+
 dotenv.config();
 
 const app = express();
@@ -95,73 +97,13 @@ async function createConnection() {
   console.log("Mongo is connected ✌️😊");
   return client;
 }
-const client = await createConnection();
+export const client = await createConnection();
 
 app.get("/", function (request, response) {
   response.send("Hello 🌏✨🎊");
 });
 
-//Cursor- pagination -> convert to array use (toArray) method
-//Get all movies in the database:
-app.get("/movies", async function (request, response) {
-  // db.movies.find({})-> in mysql
-  const movies = await client
-  .db("b30wd")
-  .collection("movies")
-  .find({}).toArray();
-  response.send(movies);
-});
-
-//get one movie only:
-app.get("/movies/:id",async function (request, response) {
-    console.log(request.params);
-    // filter | find
-    const { id } = request.params;
-    // const movie = movies.find((mv) => mv.id === id);
-    const movie= await client
-    .db("b30wd")
-    .collection("movies")
-    .findOne({id : id});
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
-    movie? response.send(movie): response.status(404).send({ message: "No such movie found 😅" });
-  });
-
-  //delete movie code:
-  app.delete("/movies/:id",async function (request, response) {
-    console.log(request.params);
-    // filter | find
-    const { id } = request.params;
-    // const movie = movies.find((mv) => mv.id === id);
-    const result= await client
-    .db("b30wd")
-    .collection("movies")
-    .deleteOne({id : id});
-    response.send(result);
-  });
-  
-  //Edit the movie:
-  app.put("/movies/:id", async function (request, response) {
-    console.log(request.params);
-    // db.movies.updateOne({id: "102"}, {$set: upadateData})
-    const { id } = request.params;
-    const updateData = request.body;
-
-    const result = await client
-    .db("b30wd")
-    .collection("movies")
-    .updateOne({ id: id }, { $set: updateData });
-    response.send(result);});
-
-  //Add new movies:
-  app.post("/movies", async function (request, response) {
-    
-    const data= request.body;
-    const result= await client
-    .db("b30wd")
-    .collection("movies")
-    .insertMany(data);
-    response.send(result);
-  
-  });
+app.use('/movies', moviesRouter)
   
   app.listen(PORT, () => console.log(`Server started in ${PORT} `));
+
