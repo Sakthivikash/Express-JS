@@ -1,18 +1,19 @@
 import express from 'express';
 import { getAllMovies, getMovieById, deleteMovieById, updateMovieById, createMovies } from '../helper.js';
+import { auth } from '../middleware/auth.js';
 
 const router = express.Router();
 
 //Cursor pagination -> convert to array use (toArray) method
 //Get all movies in the database:
-router.get("/", async function (request, response) {
+router.get("/", auth ,  async function (request, response) {
   // db.movies.find({})-> in mysql
   const movies = await getAllMovies();
   response.send(movies);
 });
 
 //get one movie only:
-router.get("/:id",async function (request, response) {
+router.get("/:id", async function (request, response) {
     console.log(request.params);
     // filter | find
     const { id } = request.params;
@@ -43,7 +44,7 @@ router.get("/:id",async function (request, response) {
     response.send(result);});
 
   //Add new movies:
-  router.post("/", async function (request, response) {
+  router.post("/", auth ,  async function (request, response) {
     
     const data= request.body;
     const result= await createMovies(data);
