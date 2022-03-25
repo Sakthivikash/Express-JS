@@ -6,7 +6,7 @@ const router = express.Router();
 
 //Cursor pagination -> convert to array use (toArray) method
 //Get all movies in the database:
-router.get("/", auth ,  async function (request, response) {
+router.get("/",  async function (request, response) {
   // db.movies.find({})-> in mysql
   const movies = await getAllMovies();
   response.send(movies);
@@ -44,7 +44,7 @@ router.get("/:id", async function (request, response) {
     response.send(result);});
 
   //Add new movies:
-  router.post("/", auth ,  async function (request, response) {
+  router.post("/", async function (request, response) {
     
     const data= request.body;
     const result= await createMovies(data);
