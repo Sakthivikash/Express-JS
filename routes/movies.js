@@ -5,14 +5,14 @@ const router = express.Router();
 
 //Cursor pagination -> convert to array use (toArray) method
 //Get all movies in the database:
-router.get("/movies", async function (request, response) {
+router.get("/", async function (request, response) {
   // db.movies.find({})-> in mysql
   const movies = await getAllMovies();
   response.send(movies);
 });
 
 //get one movie only:
-router.get("/movies/:id",async function (request, response) {
+router.get("/:id",async function (request, response) {
     console.log(request.params);
     // filter | find
     const { id } = request.params;
@@ -23,7 +23,7 @@ router.get("/movies/:id",async function (request, response) {
   });
 
   //delete movie code:
-  router.delete("/movies/:id",async function (request, response) {
+  router.delete("/:id",async function (request, response) {
     console.log(request.params);
     // filter | find
     const { id } = request.params;
@@ -33,7 +33,7 @@ router.get("/movies/:id",async function (request, response) {
   });
   
   //Edit the movie:
-  router.put("/movies/:id", async function (request, response) {
+  router.put("/:id", async function (request, response) {
     console.log(request.params);
     // db.movies.updateOne({id: "102"}, {$set: upadateData})
     const { id } = request.params;
@@ -43,7 +43,7 @@ router.get("/movies/:id",async function (request, response) {
     response.send(result);});
 
   //Add new movies:
-  router.post("/movies", async function (request, response) {
+  router.post("/", async function (request, response) {
     
     const data= request.body;
     const result= await createMovies(data);

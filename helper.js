@@ -13,6 +13,19 @@ export async function createMovies(data) {
       .collection("movies")
       .insertMany(data);
   }
+
+  export async function createUser(data) {
+    return await client
+      .db("b30wd")
+      .collection("users")
+      .insertOne(data);
+  }
+  export async function getUserByName(username) {
+    return await client
+      .db("b30wd")
+      .collection("users")
+      .findOne({ username: username });
+  }
   
   export async function updateMovieById(id, updateData) {
     return await client
